@@ -15,13 +15,13 @@ class Scrapper_model extends CI_Model {
         $ret = array();
         // scrapping the data through the html tags
         if($html->find('.pdp-product-title')) {
-            
             $title = $html->find('.pdp-product-title')[0]->plaintext;
             $price = $html->find('.pdp-product-price')[0]->find('.pdp-price')[0]->plaintext;
             $price = str_replace("Rp", "", $price);
             $price = str_replace(".", "", $price);
-            if($html->find('.detail-content')) $description = $html->find('.detail-content')[0]->plaintext;
-            else $description = "No description available.";
+            $description = "";
+            if($html->find('.pdp-product-highlights')) $description .= $html->find('.pdp-product-highlights')[0];
+            if($html->find('.detail-content')) $description .= '<p>'.$html->find('.detail-content')[0];
 
             // getting the product images with the real size
             foreach($html->find('.item-gallery__thumbnail-image') as $image) {

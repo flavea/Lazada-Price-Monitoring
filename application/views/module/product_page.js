@@ -56,63 +56,69 @@ let product = {
                 $(".uk-container").hide()
             },
             success(data) {
-                $("#productName").text(data.product_data.title);
-                $("#productPrice").text(data.product_data.price);
-                $("#productDescription").html(data.product_data.description.replace("/r/n", "<br>"));
-                $("#productLink").attr("href", data.product_data.url);
+                if (data.product_data.length > 0) {
+                    $("#productName").text(data.product_data.title);
+                    $("#productPrice").text(data.product_data.price);
+                    $("#productDescription").html(data.product_data.description);
+                    $("#productLink").attr("href", data.product_data.url);
 
-                data.product_data.images.forEach(i => {
-                    let temp = $(".sliderTemp").clone().removeClass("sliderTemp").show()
-                    $('a', temp).attr("href", i.src)
-                    $('img', temp).attr("src", i.src)
-                    $('#images').append(temp)
-                });
-
-                let leftImages = 5 - (data.product_data.images.length % 5)
-
-                if (leftImages != 5) {
-                    for (let i = 0; i < leftImages; i++) {
+                    data.product_data.images.forEach(i => {
                         let temp = $(".sliderTemp").clone().removeClass("sliderTemp").show()
-                        $('a', temp).remove()
-                        $('img', temp).remove()
+                        $('a', temp).attr("href", i.src)
+                        $('img', temp).attr("src", i.src)
                         $('#images').append(temp)
+                    });
+
+                    let leftImages = 5 - (data.product_data.images.length % 5)
+
+                    if (leftImages != 5) {
+                        for (let i = 0; i < leftImages; i++) {
+                            let temp = $(".sliderTemp").clone().removeClass("sliderTemp").show()
+                            $('a', temp).remove()
+                            $('img', temp).remove()
+                            $('#images').append(temp)
+                        }
                     }
-                }
 
-                let smallData = data.product_prices.reverse().slice(0, 5)
+                    let smallData = data.product_prices.reverse().slice(0, 5)
 
-                smallData.forEach(p => {
-                    let temp = $(".pTemp").clone().removeClass("pTemp")
-                    $('.iDate', temp).text(p.created_at)
-                    $('.iPrice', temp).text(`Rp ${p.price}`)
-                    $('#smallList tbody').append(temp)
-                })
-
-                data.product_prices.forEach(p => {
-                    let temp = $(".pTemp").clone().removeClass("pTemp")
-                    $('.iDate', temp).text(p.created_at)
-                    $('.iPrice', temp).text(`Rp ${p.price}`)
-                    $('#bigList tbody').append(temp)
-                })
-
-                let leftPrices = 5 - (smallData.length % 5)
-
-                if (leftPrices != 5) {
-                    for (let i = 0; i < leftPrices; i++) {
+                    smallData.forEach(p => {
                         let temp = $(".pTemp").clone().removeClass("pTemp")
-                        $('.iDate', temp).text("-")
-                        $('.iPrice', temp).text("-")
+                        $('.iDate', temp).text(p.created_at)
+                        $('.iPrice', temp).text(`Rp ${p.price}`)
                         $('#smallList tbody').append(temp)
+                    })
+
+                    data.product_prices.forEach(p => {
+                        let temp = $(".pTemp").clone().removeClass("pTemp")
+                        $('.iDate', temp).text(p.created_at)
+                        $('.iPrice', temp).text(`Rp ${p.price}`)
+                        $('#bigList tbody').append(temp)
+                    })
+
+                    let leftPrices = 5 - (smallData.length % 5)
+
+                    if (leftPrices != 5) {
+                        for (let i = 0; i < leftPrices; i++) {
+                            let temp = $(".pTemp").clone().removeClass("pTemp")
+                            $('.iDate', temp).text("-")
+                            $('.iPrice', temp).text("-")
+                            $('#smallList tbody').append(temp)
+                        }
                     }
+
+                    view.createChart(smallData, "smallChart")
+                    view.createChart(data.product_prices, "bigChart")
+
+                    $("#pageLoader").hide()
+                    $(".uk-container").show()
+
+                    view.loadComments()
+                } else {
+                    UIkit.modal.alert("This product does not exist.").then(() => {
+                        window.location.href = base_url
+                    });
                 }
-
-                view.createChart(smallData, "smallChart")
-                view.createChart(data.product_prices, "bigChart")
-
-                $("#pageLoader").hide()
-                $(".uk-container").show()
-
-                view.loadComments()
             },
             error(ret) {
                 console.log(ret)
