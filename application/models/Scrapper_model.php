@@ -14,7 +14,7 @@ class Scrapper_model extends CI_Model {
 
         $ret = array();
         // scrapping the data through the html tags
-        if($html->find('.pdp-product-title')) {
+        if($html != false && $html->find('.pdp-product-title')) {
             $title = $html->find('.pdp-product-title')[0]->plaintext;
             $price = $html->find('.pdp-product-price')[0]->find('.pdp-price')[0]->plaintext;
             $price = str_replace("Rp", "", $price);

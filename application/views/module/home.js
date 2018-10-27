@@ -36,7 +36,8 @@ let home = {
                 UIkit.modal("#loader").show()
             },
             success(ret) {
-                window.location.href = `${base_url}product/index/${ret.id}`
+                if (ret.id > 0) window.location.href = `${base_url}product/index/${ret.id}`
+                else UIkit.modal.alert("A product with this link does not exist. Please try again.")
             },
             error(ret) {
                 console.log(ret)

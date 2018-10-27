@@ -18,8 +18,15 @@ class Product extends MY_Controller {
 
     public function add_new_product() {
         $link = $this->input->post("url");
-        $link = substr($link, 0, strpos($link, ".html") + 5);
-        $id = $this->Product_model->add_new_product($link);
+        if(strpos($link, ".html")) $link = substr($link, 0, strpos($link, ".html") + 5);
+        $data = $this->Scrapper_model->scrap_data($link);
+        $id = 0;
+        
+        if($data != false && sizeof($data) != 0) {
+            $id = $this->Product_model->add_new_product($link);
+            $this->Product_model->update_product($id, $data['title'], $data['description'], $data['price']);
+        }
+
         echo json_encode(array("id" => $id));
     }
     
@@ -28,7 +35,7 @@ class Product extends MY_Controller {
         echo json_encode($products);
     }
     
-    public function get_data($id) {
+    public function get_data($id, $update = "") {
         $data = [];
         $prices = [];
         $product = $this->Product_model->get_product($id);
@@ -38,12 +45,8 @@ class Product extends MY_Controller {
             $data = $this->Scrapper_model->scrap_data($p->product_url);
         }
 
-        if(sizeof($data) != 0) {
-
-            //comment below line if you want the data update only happen through the server
-            $this->Product_model->update_product($id, $data['title'], $data['description'], $data['price']);
-
-            //do not comment this one
+        if($data != false && sizeof($data) != 0) {
+            if($this->config->item('client_side_update') == true) $this->Product_model->update_product($id, $data['title'], $data['description'], $data['price']);
             $prices = $this->Product_model->get_price_history($id);
         }
 

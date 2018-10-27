@@ -36,22 +36,22 @@ let product = {
         })
 
         $(document).on('click', '.reply', e => {
-                view.currComment = $(e.currentTarget).attr("comment_id")
-                $('.reply-box').remove()
-                let cb = $("#comment-box").clone().removeClass("main-box").addClass('reply-box')
-                $(`#comment-${view.currComment} > ul`).before(cb)
-            })
-            //get data every one hour when the page is
-        setInterval(view.getData, 1000 * 60 * 60);
-        view.getData()
+            view.currComment = $(e.currentTarget).attr("comment_id")
+            $('.reply-box').remove()
+            let cb = $("#comment-box").clone().removeClass("main-box").addClass('reply-box')
+            $(`#comment-${view.currComment} > ul`).before(cb)
+        })
+
+        setInterval(view.getData(), 1000 * 60 * 60)
     },
-    getData() {
+    getData(update = "") {
         //to get and scrap new data from the website
         $.ajax({
             url: `${base_url}product/get_data/${view.productID}`,
             type: "GET",
             dataType: "JSON",
             beforeSend() {
+                $('#images, #smallList tbody, #bigList tbody, #comments').empty()
                 $("#pageLoader").show()
                 $(".uk-container").hide()
             },
@@ -60,6 +60,7 @@ let product = {
                     $("#productName").text(data.product_data.title);
                     $("#productPrice").text(data.product_data.price);
                     $("#productDescription").html(data.product_data.description);
+                    $("#productDescription img").remove()
                     $("#productLink").attr("href", data.product_data.url);
 
                     data.product_data.images.forEach(i => {
@@ -115,7 +116,7 @@ let product = {
 
                     view.loadComments()
                 } else {
-                    UIkit.modal.alert("This product does not exist.").then(() => {
+                    UIkit.modal.alert("This product does not exist or has been deleted.").then(() => {
                         window.location.href = base_url
                     });
                 }
@@ -283,6 +284,7 @@ let product = {
                 data.own_downvote = 0
                 data.own_upvote = 0
 
+                view.Comments.push(data)
                 let temp = view.processComment(data)
                 append.prepend(temp)
                 $('.reply-box').remove()
@@ -315,6 +317,7 @@ let product = {
                     $(`.upvote[comment_id=${view.currComment}]`).next().text(newUpvote)
                     view.currComment = ""
                     view.Comments[idx].upvotes = newUpvote
+                    view.Comments[idx].own_upvote = 1
                     $(target).addClass("uk-alert-success").addClass('removeUpvote').removeClass('upvote')
                 } else if (ret.id == -1) UIkit.modal.alert("You have upvoted this.")
                 else if (ret.id == -2) UIkit.modal.alert("You downvoted this comment, you can only upvote or downvote.")
@@ -342,6 +345,7 @@ let product = {
                     $(`.removeUpvote[comment_id=${view.currComment}]`).next().text(newUpvote)
                     view.Comments[idx].upvotes = newUpvote
                     view.currComment = ""
+                    view.Comments[idx].own_upvote = 0
                     $(target).removeClass("uk-alert-success").removeClass('removeUpvote').addClass('upvote')
                 }
             },
@@ -369,6 +373,7 @@ let product = {
                     $(`.downvote[comment_id=${view.currComment}]`).next().text(newDownvote)
                     view.currComment = ""
                     view.Comments[idx].downvotes = newDownvote
+                    view.Comments[idx].own_downvote = 1
                     $(target).addClass("uk-alert-danger").addClass('removeDownvote').removeClass('downvote')
                 } else if (ret.id == -1) UIkit.modal.alert("You have downvoted this.")
                 else if (ret.id == -2) UIkit.modal.alert("You upvoted this comment, you can only upvote or downvote.")
@@ -396,6 +401,7 @@ let product = {
                     $(`.removeDownvote[comment_id=${view.currComment}]`).next().text(newDownvote)
                     view.currComment = ""
                     view.Comments[idx].downvotes = newDownvote
+                    view.Comments[idx].own_downvote = 0
                     $(target).removeClass("uk-alert-danger").removeClass('removeDownvote').addClass('downvote')
                 }
             },

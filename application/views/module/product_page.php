@@ -53,13 +53,13 @@
                 </center>
 
                 <div id="full-history" class="uk-modal-full" uk-modal>
-                    <div class="uk-modal-dialog uk-height-1-1">
+                    <div class="uk-modal-dialog uk-height-1-1 uk-overflow-auto">
                         <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-                        <div class="uk-grid-collapse uk-flex-middle class="uk-width-1-3@m"" uk-grid>
+                        <div class="uk-grid-collapse"" uk-grid>
                             
                             <h2 class="uk-text-center uk-margin-large-top uk-width-3-3">Full History</h2>
                             <div class="uk-padding-large uk-width-expand@s">
-					            <canvas id="bigChart" height="100%"></canvas>
+					            <canvas id="bigChart" class="uk-height-1-1"></canvas>
                             </div>
                             <div class="uk-padding-large uk-width-3-3@s  uk-width-1-3@m">
                                 <table id="bigList" class="uk-table uk-table-divider">

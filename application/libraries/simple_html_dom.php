@@ -1696,10 +1696,10 @@ class simple_html_dom
 		// We DO force the tags to be terminated.
 		$dom = new simple_html_dom(null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText, $defaultSpanText);
 		// For sourceforge users: uncomment the next line and comment the retreive_url_contents line 2 lines down if it is not already done.
-		$contents = file_get_contents($url, $use_include_path, $context);
+		$contents = @file_get_contents($url, $use_include_path, $context);
 		// Paperg - use our own mechanism for getting the contents as we want to control the timeout.
 		//$contents = retrieve_url_contents($url);
-		if (empty($contents) || strlen($contents) > MAX_FILE_SIZE)
+		if ($contents === false || empty($contents) || strlen($contents) > MAX_FILE_SIZE)
 		{
 			return false;
 		}
