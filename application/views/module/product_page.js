@@ -56,7 +56,7 @@ let product = {
                 $(".uk-container").hide()
             },
             success(data) {
-                if (data.product_data.length > 0) {
+                if (typeof data.product_data.url !== "undefined") {
                     $("#productName").text(data.product_data.title);
                     $("#productPrice").text(data.product_data.price);
                     $("#productDescription").html(data.product_data.description);
