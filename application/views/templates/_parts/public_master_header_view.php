@@ -41,7 +41,7 @@
 		.script("https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.20/js/uikit.min.js")
 		.script("https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.20/js/uikit-icons.min.js")
 		.script("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js").wait()
-		.script("<?= base_url('application/views/'.$file.'.js') ?>").wait();
+		.script("<?= base_url('application/views/module/'.$file.'.js') ?>").wait();
 
 </script>
 <style>

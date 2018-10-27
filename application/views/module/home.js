@@ -36,7 +36,7 @@ let home = {
                 UIkit.modal("#loader").show()
             },
             success(ret) {
-                window.location.href = `${base_url}product/${ret.id}`
+                window.location.href = `${base_url}product/index/${ret.id}`
             },
             error(ret) {
                 console.log(ret)

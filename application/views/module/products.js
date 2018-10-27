@@ -3,7 +3,7 @@ $.ajax({
     type: "GET",
     dataType: "JSON",
     beforeSend() {
-        UIkit.modal("#loader").show()
+        $("#pageLoader").show()
     },
     success(data) {
         if (data.length > 0) {
@@ -12,12 +12,13 @@ $.ajax({
                 $(".iName", temp).text(v.product_name)
                 $(".iMonitor", temp).attr("href", `${base_url}product/index/${v.product_id}`)
                 $(".iLazada", temp).attr("href", v.product_url)
-                $("tbody").append(temp)
+                $("#products tbody").append(temp)
             });
-        }
-        UIkit.modal("#loader").hide()
 
-        $("#products").DataTable()
+            $("#products").show()
+            $("#products").DataTable()
+        } else $("#notFound").show()
+        $("#pageLoader").hide()
     },
     error(ret) {
         console.log(ret.toString())
