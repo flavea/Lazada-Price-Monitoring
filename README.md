@@ -4,7 +4,7 @@ A webapp to monitor prices on Lazada using submitted product links. A live demo 
   - Inputted products list included
   - Product data includes the product name, highlights, description, and images.
   - Includes price history and a graphic chart to visualize the price change.
-  - Data updated everytime the product page is reloaded, every one hour when the page opened, and every one hour through the server.
+  - Data updated every one hour when the page opened or every one hour through the server.
   - Multi-thread/multi-level comments with upvotes and downvotes. Comments on the product page is sorted by score (upvote - downvote). You can't give both upvote and downvote for the comment, only one.
   
 # How To Install
