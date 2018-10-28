@@ -24,7 +24,7 @@ class Product extends MY_Controller {
         
         if($data != false && sizeof($data) != 0) {
             $id = $this->Product_model->add_new_product($link);
-            $this->Product_model->update_product($id, $data['title'], $data['description'], $data['price']);
+            if($this->config->item('client_side_update') == false) $this->Product_model->update_product($id, $data['title'], $data['description'], $data['price']);
         }
 
         echo json_encode(array("id" => $id));
