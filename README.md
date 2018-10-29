@@ -1,6 +1,7 @@
 # Lazada Price Monitor
 
-A webapp to monitor prices on Lazada using submitted product links. A live demo can be accessed through http://lazada.hellolittlered.org/
+A webapp to monitor prices on Lazada using submitted product links. Powered by CI and Ajax.
+A live demo can be accessed through http://lazada.hellolittlered.org/
   - Inputted products list included
   - Product data includes the product name, highlights, description, and images.
   - Includes price history and a graphic chart to visualize the price change.
@@ -18,7 +19,7 @@ A webapp to monitor prices on Lazada using submitted product links. A live demo 
 **warning:** make sure you are connected to the internet when running the application
 
 # Create an Update Schedule
- If you want to app to be able to update the prices even when the page is opened, you need to set up a cron job or a schedule on your server. Your schedule need to curl **APP_URL/scrapper**. There are several ways to curl a link on crob jobs or task scheduler.
+ If you want to app to be able to update the prices even when the page is not opened, you need to set up a cron job or a schedule on your server. Your schedule need to curl **APP_URL/scrapper**. There are several ways to curl a link on crob jobs or task scheduler.
  - If you are using cPanel, you can go to cron jobs > add new cron job and set the settings
  - If you are using linux server, read [this file](https://awc.com.my/uploadnew/5ffbd639c5e6eccea359cb1453a02bed_Setting%20Up%20Cron%20Job%20Using%20crontab.pdf) as a guide to set up cron jobs.
 On both cPanel and linux, set the command as:
@@ -26,7 +27,7 @@ On both cPanel and linux, set the command as:
   - If you are using Windows, read [this guide](https://www.drupal.org/docs/7/setting-up-cron-for-drupal/configuring-cron-jobs-with-windows).
 
 ##### Note:
-If you don't want the prices to be updated when you reload the product page, If you want the prices to be updated only using the scheduler/cron job (server side only), set **$config['client_side_update']** on **application/config/config.php** to false:
+If you don't want the prices to be updated when you reload the product page or if you want the prices to be updated only using the scheduler/cron job (server side only), set **$config['client_side_update']** on **application/config/config.php** to false:
 ```
 $config['client_side_update'] = false;
 ```
